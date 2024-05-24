@@ -32,6 +32,8 @@ const Input_field = ({access_id,set_id,todo_list,set_todo_list,display_completed
         //$ created object and stored
         localStorage.setItem("todo_list",JSON.stringify({...todo_list,[cur_id] : todo_obj}));
         console.log("saved IN LOCAL");
+        set_todo_list({...todo_list,[cur_id] : todo_obj})
+        console.log("also updated set_todo_list\n");
         set_id(cur_id+1);
         // console.log("access_id is now: ",access_id());        
         set_todo_message(default_message);

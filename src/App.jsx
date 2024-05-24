@@ -4,12 +4,47 @@ import Input_field from './Input_field'
 import Todo from './Todo';
 
 function App() {
-  
-  const [todo_list,set_todo_list] = useState({});
+  let initial_todo_list;
+  let initial_first_id;
+  let called_App = useRef(1);
+
+  const fetch_data = ()=>{
+    console.log("fetch data called ..")
+  initial_todo_list = localStorage.getItem("todo_list");
+  if(initial_todo_list == null || initial_todo_list == undefined){
+    console.log("entered if for list\n");
+    initial_todo_list = {};
+  }
+  else{
+    console.log("entered else for list\n");
+    initial_todo_list = JSON.parse(initial_todo_list); 
+  };
+
+  initial_first_id = localStorage.getItem("first_id");
+  if(initial_first_id == null || initial_first_id == undefined){
+    console.log("entered if for id\n");
+    initial_first_id = 0;
+  }
+  else{
+    console.log("entered else for id\n");
+    initial_first_id = JSON.parse(initial_first_id);
+  };
+};
+
+  if(called_App.current == 1){
+    fetch_data();
+    called_App.current = called_App.current + 1;
+  };
+
+  console.log("initial_todo_list is ",initial_todo_list);
+  console.log("initial_first_id is ",initial_first_id);
+  const [todo_list,set_todo_list] = useState(initial_todo_list);
   const [display_completed,set_display_completed] = useState(false);
-  let [first_id,set_first_id] = useState(0);
+  const [first_id,set_first_id] = useState(initial_first_id);
+
 
   //each todo will be saved as an object
+
 
   console.log("\n\n------todo list is ",todo_list);
   console.log("display_completed is ",display_completed);
@@ -20,37 +55,37 @@ function App() {
   const access_id = ()=>{
     return first_id;
   };
-  //$ don;t do anything here
+
+//$ don;t do anything here
   const set_id = (value)=>{
     console.log("storing to local fetched_id")
     localStorage.setItem("first_id",JSON.stringify(value));
     set_first_id(value); 
   }
+
+
   //todo: development on all use effect hooks here
   useEffect(()=>{
     console.log("rendering for the first time\n");
-    let fetched_id = JSON.parse(localStorage.getItem("first_id"));
-    console.log("fetched id is ",fetched_id);
-    console.log("setting first is\n");
-    if(fetched_id != null && fetched_id != undefined){
-      set_first_id(fetched_id);
-    };
+    // let fetched_id = JSON.parse(localStorage.getItem("first_id"));
+    // console.log("fetched id is ",fetched_id);
+    // console.log("setting first is\n");
+    // if(fetched_id != null && fetched_id != undefined){
+    //   set_first_id(fetched_id);
+    // };
     // set_first_id(fetched_id);
 
   },[])
   useEffect(() => {
-    console.log("rerendering the whole app evrey time\n");
-    // let fetched_id = JSON.parse(localStorage.getItem("first_id"));
-    // console.log("fetched id is ",fetched_id);
-    
+    console.log("rerendering the whole app evrey time\n");    
   });
   
   useEffect(() => {
     console.log("setting todo list due to change in first_id ")
-    let new_obj = JSON.parse(localStorage.getItem("todo_list"));
-    if(new_obj!= null && new_obj!= undefined){
-      set_todo_list(new_obj);
-    };
+    // let new_obj = JSON.parse(localStorage.getItem("todo_list"));
+    // if(new_obj!= null && new_obj!= undefined){
+    //   set_todo_list(new_obj);
+    // }
   }, [first_id])
   ///todo: development stops
 
@@ -63,12 +98,13 @@ function App() {
   //   todo_text:
   //   todo_status:
   // }
+
   //!! does nothing starts... 
-  let fetched_from_local =  localStorage.getItem("todo_list");
-  console.log("fetched data is ",fetched_from_local);
-  if(fetched_from_local != "[object Object]"){
-    console.log("in parsed form ",JSON.parse(fetched_from_local));
-  };
+  // let fetched_from_local =  localStorage.getItem("todo_list");
+  // console.log("fetched data is ",fetched_from_local);
+  // if(fetched_from_local != "[object Object]"){
+  //   console.log("in parsed form ",JSON.parse(fetched_from_local));
+  // };
   
   //!!does nothing ends...
 
