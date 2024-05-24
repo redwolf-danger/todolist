@@ -9,11 +9,11 @@ const Input_field = ({access_id,set_id,todo_list,set_todo_list,display_completed
   let input_todo_field = useRef(); 
   const [todo_message, set_todo_message] = useState(default_message);
 
-  //$  don't touch this fuction 
+  //$  don't touch this function 
   const handle_todo_Change = (e) => {
     set_todo_message(e.target.value);
   };
-  
+
 
  //$ update this function for handling enters
   const enter_for_todo_input = ()=>{
@@ -32,11 +32,12 @@ const Input_field = ({access_id,set_id,todo_list,set_todo_list,display_completed
         //$ created object and stored
         localStorage.setItem("todo_list",JSON.stringify({...todo_list,[cur_id] : todo_obj}));
         console.log("saved IN LOCAL");
-        set_id(cur_id+1);        
+        set_id(cur_id+1);
+        // console.log("access_id is now: ",access_id());        
         set_todo_message(default_message);
   };
 
-  //$ enter  key event
+  //$ enter key event
   
   const handle_input_enter =  (e)=>{
     if(e.key == "Enter"){
