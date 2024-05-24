@@ -1,8 +1,9 @@
-# React + Vite
+# Simple TODO App
+## features
+1.notes stored in local storage\
+2.used tailwind to make web app responsive\
+3.can add,delete notes\
+4.mark tasks as completed or leave them as pending\
+5.choose between showing completed tasks or not\
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
