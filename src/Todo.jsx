@@ -1,23 +1,37 @@
 import React, { useRef, useState } from "react";
 
-const Todo = ({todo_text, todo_id, delete_function, update_function}) => {
+const Todo = ({todo_text, todo_id, completed, todo_list, set_todo_list, delete_function,update_function,completed_function}) => {
  
+    console.log("this is a todo with todo text: ",todo_text,"\n");
     let inputref = useRef();
     const [display_text, set_display_text] = useState(todo_text);
     const update = useRef(false);
+
     //if true i can update else i can't
     const change_button_clicked = ()=>{
         console.log("toggling classes\n");
         inputref.current.classList.toggle("caret-transparent");
         inputref.current.classList.toggle("outline-none");
-        update.current = true;
-        inputref.current.focus();
+        update.current = !update.current;
+        if(update.current){
+          inputref.current.focus();
+          //maybe add event listener
+        }
+        else{
+          inputref.current.blur();
+          console.log("blurring and updating todo list..")
+          localStorage.setItem("todo_list",JSON.stringify({...todo_list,[todo_id]:{todo_text : display_text,todo_id:todo_id, completed:completed}}));
+          set_todo_list({...todo_list,[todo_id]:{todo_text : display_text,todo_id:todo_id, completed:completed}});
+          // .maybe remove event listener 
+        }
     };
+    //$ don;t change here 
     const handle_input_change = (e)=>{
         if(update.current == true){
             set_display_text(e.target.value);
         };
     };
+
     const handle_key_event  = (e)=>{
         // console.log("key is ",e.key);
         // console.log("display text is ",display_text);
@@ -26,9 +40,29 @@ const Todo = ({todo_text, todo_id, delete_function, update_function}) => {
             change_button_clicked();
         };
     };
+    const clicked_on_trash = ()=>{
+      // set_todo_list({})
+      console.log("clicked on trash icon");
+      console.log("todo list looks like ",todo_list);
+      let cur_obj = todo_list;
+      delete cur_obj[todo_id];
+      console.log("new todo list will look like ",cur_obj);
+      localStorage.setItem("todo_list",JSON.stringify(cur_obj));
+      console.log("stored updated list in local")
+      set_todo_list((prev)=>{
+        delete prev[todo_id];
+        return {...prev};
+      });
+      console.log("executing set_todo_list \n");
+    };
+    const status_change= (e)=>{console.log("checkbox is checked to: ",e.target.checked)
+      set_todo_list({...todo_list,[todo_id]:{todo_text:todo_text,todo_id:todo_id,completed:e.target.checked}});
+    };
 
     return (
-    <div className="flex p-2 border-2 border-green-600 gap-2 justify-between">
+    <div className="flex p-2 border-2 border-green-600 gap-2 justify-between w-full">
+      
+      <input type="checkbox" name="completed_status" defaultChecked={completed} width={"15px"} height={"15px"} onClick={status_change}/>
       <input
         ref = {inputref}
         className="w-9/12 caret-transparent outline-none" 
@@ -37,13 +71,12 @@ const Todo = ({todo_text, todo_id, delete_function, update_function}) => {
         name="todo_item"
         autoComplete="off"
         value={display_text}
-        id={todo_id}
-        key={todo_id}
+        
         onChange={handle_input_change}
         onKeyDown={handle_key_event}
       />
       {/* //button for trash */}
-      <button className="flex items-center justify-center bg-blue-200 p-2 border border-black rounded">
+      <button className="flex items-center justify-center bg-blue-200 p-2 border border-black rounded " onClick={clicked_on_trash}>
         <svg
           style={{ height: "15px", width: "15px" }}
           xmlns="http://www.w3.org/2000/svg"

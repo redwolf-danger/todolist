@@ -19,6 +19,9 @@ const Input_field = ({access_id,set_id,todo_list,set_todo_list,display_completed
   const enter_for_todo_input = ()=>{
         let text = input_todo_field.current.value;
         console.log("text is ", text);
+        if(text == ""){
+          return;
+        };
         let cur_id  = access_id();
         console.log("adding id ",cur_id);
         let todo_obj = {
